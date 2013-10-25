@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, url
-from core.views import UserView, LoginView
+from core.views import UserView, LoginView, LogoutView
 from core.views import cast_vote
 from core.views import test_vote
 

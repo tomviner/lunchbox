@@ -20,6 +20,8 @@ class UserForm(forms.ModelForm):
 class UserView(CreateView):
     model = User
     form_class = UserForm
+    template_name = 'core/person_list.html'
+    success_url = reverse_lazy('core:home')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
