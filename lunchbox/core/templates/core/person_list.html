@@ -52,28 +52,33 @@
       </div>
     </div>
 
-    <div id="restuarants-placeholder" class="container">
-        <img src="{% static 'core/loader.gif' %}"/>
-    </div>
+    {% if not view.request.user.is_authenticated %}
+      <div class="container">
+        <h2>Please click your name or type it below</h2>
+        <!-- Example row of columns -->
+        {% for person in object_list %}
+            {% if forloop.first %}
+                <ul>
+            {% endif %}
+            <li><a href="{% url "core:login" pk=person.pk %}">{{ person.username }}</a></li>
+            {% if forloop.last %}
+                </ul>
+            {% endif %}
+        {% empty %}
+            <div class="alert alert-warning">
+                <strong>{% trans "Warning!" %}</strong> {% trans 'Nobody wants to eat yet' %}
+            </div>
+        {% endfor %}
+         {% crispy form %}
+        </div>
+      </div>
+    {% else %}
+      <div id="restuarants-placeholder" class="container">
+          <img src="{% static 'core/loader.gif' %}"/>
+      </div>
+    {% endif %}
 
     <div class="container">
-       {% crispy form %}
-      <!-- Example row of columns -->
-      {% for person in object_list %}
-          {% if forloop.first %}
-              <ol>
-          {% endif %}
-          <li><a href="{% url "core:login" pk=person.pk %}">{{ person.username }}</a></li>
-          {% if forloop.last %}
-              </ol>
-          {% endif %}
-      {% empty %}
-          <div class="alert alert-warning">
-              <strong>{% trans "Warning!" %}</strong> {% trans 'Nobody wants to eat yet' %}
-          </div>
-      {% endfor %}
-      </div>
-
       <footer>
         <p>&copy; Hogarth Worldwide 2013</p>
       </footer>
@@ -94,7 +99,7 @@
         {% endverbatim %}
         <script id="rando-rest-query" type="application/sparql-query+x-handlebars-template">
             SELECT DISTINCT(?cuisine) ?restaurant ?label ?long ?lat
-            WHERE 
+            WHERE
             {
                 ?restaurant a lgdo:Restaurant ;
                     lgdo:cuisine ?cuisine ;
