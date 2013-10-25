@@ -1,10 +1,9 @@
-from django.utils.translation import ugettext_lazy as _
-
-from django.forms import ModelForm
-from .models import Person
-
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
+from django.forms import ModelForm
+from django.utils.translation import ugettext_lazy as _
+
+from .models import Person
 
 
 class PersonForm(ModelForm):

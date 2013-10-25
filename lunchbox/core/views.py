@@ -1,6 +1,5 @@
-from django.views.generic import CreateView
 from django.core.urlresolvers import reverse_lazy
-
+from django.views.generic import CreateView
 
 from .models import Person
 
