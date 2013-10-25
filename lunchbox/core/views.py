@@ -3,19 +3,15 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import login, logout
-from django.contrib.auth import authenticate
-from datetime import date
 from django.shortcuts import render
 from django.http import HttpResponse
-from django.shortcuts import redirect, render
-from django.views.decorators.csrf import csrf_exempt
-from django.views.generic import CreateView, DetailView
+from django.shortcuts import redirect
+from django.views.generic import CreateView, DetailView, ListView
 
 from core.models import Restaurant, Vote
-from core.models import Vote
-from core.models import Restaurant
+from django.db.models import Count
 import json
+
 
 class UserForm(forms.ModelForm):
 
@@ -90,5 +86,12 @@ def get_votes(request):
         tmp_votes["votes"] = Vote.objects.filter(restaurant=restaurant).count()
         all_votes.append(tmp_votes)
     return HttpResponse(json.dumps(all_votes), content_type="application/json")
+
+
+class ResultView(ListView):
+    queryset = Restaurant.objects \
+    .annotate(Count('vote')) \
+    .order_by('vote__count')
+    template_name = 'core/person_list.html'
 
 
