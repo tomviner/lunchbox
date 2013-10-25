@@ -5,9 +5,12 @@ from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout
 from django.contrib.auth import authenticate
-from .models import Vote
-from .models import Restaurant
 from datetime import date
+from django.shortcuts import render
+from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+from core.models import Vote
+from core.models import Restaurant
 
 class UserForm(forms.ModelForm):
     class Meta:
@@ -17,6 +20,9 @@ class UserForm(forms.ModelForm):
 class UserView(CreateView):
     model = User
     form_class = UserForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
         context['object_list'] = User.objects.all()
         return context
 
@@ -39,9 +45,6 @@ class LogoutView(DetailView):
         logout(request)
         self.request = request
         return redirect('/')
-from django.shortcuts import render
-from django.http import HttpResponse
-from django.views.decorators.csrf import csrf_exempt
 
 
 def test_vote(request):

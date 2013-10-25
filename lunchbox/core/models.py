@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 
 class Restaurant(models.Model):
     name = models.CharField(max_length=256, blank=False, default='')\
@@ -10,5 +10,5 @@ class Restaurant(models.Model):
 
 class Vote (models.Model):
     date = models.DateField(auto_now_add=True)
-    person = models.ForeignKey(Person)
+    user = models.ForeignKey(User)
     restaurant = models.ForeignKey(Restaurant)
