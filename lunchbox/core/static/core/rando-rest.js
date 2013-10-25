@@ -11,7 +11,7 @@
     $(function(){
         var sparql_template = Handlebars.compile($('#rando-rest-query').html()),
             resturant_template = Handlebars.compile($('#restaurant-template').html()),
-            resturant_place_holder = $('#restuarants-placeholder')
+            resturant_placeholder = $('#restuarants-placeholder')
 
         sparqler.query(
             sparql_template({
@@ -19,7 +19,7 @@
             }),
             {
                 "success": function(data){
-                    resturant_place_holder.html(
+                    resturant_placeholder.html(
                         resturant_template({
                             "restaurants" : data["results"]["bindings"]
                         })
@@ -33,5 +33,25 @@
                 }
             }
         )
+
+        resturant_placeholder.on("click", "button.vote", function(event){
+            var button = $(event.target),
+                restaurant = button.parent("a").attr("href");
+            $.ajax({
+                type: "POST",
+                url: "/vote/",
+                data: {"restaurant": restaurant},
+                success: function(data){
+                    if (data.status == "add") {
+                        button.attr("disabled", "disabled")
+                    } else {
+                        li_elem.css( {"background-color": "#fff"} )
+                        button.removeAttr("disabled")
+                    }
+                    li_elem.find('.votes').html(data.votes);
+                }
+            });
+        })
+
     });
 }( jQuery ));

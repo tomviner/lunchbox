@@ -63,7 +63,6 @@ def test_vote(request):
 
 
 @login_required
-@csrf_exempt
 def cast_vote(request):
     person_id = 1
     rest_url = request.POST["restaurant"]
