@@ -5,7 +5,9 @@ from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout
 from django.contrib.auth import authenticate
-
+from .models import Vote
+from .models import Restaurant
+from datetime import date
 
 class UserForm(forms.ModelForm):
     class Meta:
@@ -37,3 +39,26 @@ class LogoutView(DetailView):
         logout(request)
         self.request = request
         return redirect('/')
+from django.shortcuts import render
+from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+
+
+def test_vote(request):
+    context = {}
+    context["object_list"] = Restaurant.objects.all()
+    return render(request, "core/test_vote.html", context)
+
+@csrf_exempt
+def cast_vote(request):
+    person_id = 1
+    rest_id = request.POST["restaurant"]
+    vote, created = Vote.objects.get_or_create(restaurant_id=rest_id, person_id=person_id)
+    if created:
+        vote.save()
+        return HttpResponse("ok")
+    else:
+        vote.delete()
+        return HttpResponse("remove")
+
+
