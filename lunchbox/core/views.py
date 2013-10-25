@@ -1,15 +1,34 @@
+from django import forms
+from django.views.generic import CreateView, DetailView
+from django.shortcuts import redirect
 from django.core.urlresolvers import reverse_lazy
-from django.views.generic import CreateView
+from django.contrib.auth.models import User
+from django.contrib.auth import login
+from django.contrib.auth import authenticate
 
-from .models import Person
 
+class UserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ('username',)
 
-class PersonView(CreateView):
-    model = Person
+class UserView(CreateView):
+    model = User
+    form_class = UserForm
     template_name = 'core/person_list.html'
     success_url = reverse_lazy('core:home')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['object_list'] = Person.objects.all()
+        context['object_list'] = User.objects.all()
         return context
+
+
+class LoginView(DetailView):
+    model = User
+
+    def get(self, request, *args, **kwargs):
+        super().get(request, *args, **kwargs)
+        authed_user = authenticate(username=self.object.username, password=None)
+        login(request, authed_user)
+        return redirect('/')
