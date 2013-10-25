@@ -46,7 +46,6 @@ class LogoutView(DetailView):
     def get(self, request, *args, **kwargs):
         super().get(request, *args, **kwargs)
         logout(request)
-        self.request = request
         return redirect('/')
 
 
@@ -56,7 +55,6 @@ def test_vote(request):
     return render(request, "core/test_vote.html", context)
 
 
-@csrf_exempt
 def cast_vote(request):
     person_id = 1
     rest_id = request.POST["restaurant"]

@@ -90,7 +90,7 @@
         {% endverbatim %}
         <script id="rando-rest-query" type="application/sparql-query+x-handlebars-template">
             SELECT DISTINCT(?cuisine) ?restaurant ?label ?long ?lat
-            WHERE 
+            WHERE
             {
                 ?restaurant a lgdo:Restaurant ;
                     lgdo:cuisine ?cuisine ;
@@ -103,8 +103,12 @@
         </script>
         <script type="application/javascript" src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0/handlebars.min.js"></script>
         <script type="application/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.js"></script>
+        <script type="application/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.3.1/jquery.cookie.js"></script>
+        <script type="application/javascript" src={% static 'core/csrf.js' %}></script>
+        <script type="application/javascript" src={% static 'core/setup.js' %}></script>
         <script type="application/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
         <script type="application/javascript" src="https://rawgithub.com/graingert/sparql.js/master/sparql.js"></script>
         <script type="application/javascript" src={% static 'core/rando-rest.js' %}></script>
     </body>
 </html>
+
