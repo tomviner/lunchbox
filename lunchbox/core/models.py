@@ -3,7 +3,8 @@ from django.db import models
 
 
 class Restaurant(models.Model):
-    name = models.CharField(max_length=256, blank=False, default='')\
+    url = models.CharField(max_length=2048, blank=False, default='')
+    name = models.CharField(max_length=256, blank=False, default='')
 
 
     def __str__(self):

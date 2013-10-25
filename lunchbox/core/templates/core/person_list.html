@@ -44,8 +44,10 @@
     <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="jumbotron">
       <div class="container">
-        <h1>Hello, world!</h1>
-        <p>This is a template for a simple marketing or informational website. It includes a large callout called the hero unit and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
+        <h1>{% trans "Where are we going to eat?" %}</h1>
+        <p>
+          {% trans "This is a fully-synergized Hogarth Worldwide Limited restaurant selection solution." %}
+        </p>
         <p><a class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
       </div>
     </div>
@@ -73,16 +75,17 @@
       </div>
 
       <footer>
-        <p>&copy; Company 2013</p>
+        <p>&copy; Hogarth Worldwide 2013</p>
       </footer>
     </div> <!-- /container -->
         {% verbatim %}
         <script id="restaurant-template" type="text/html+x-handlebars-template">
             <ol>
                 {{#each restaurants}}
-                    <li>
+                    <li data-id="{{ restaurant.value }}" class="votable">
                         <a href="{{ restaurant.value }}">{{ label.value }}</a>
                         <span class="cuisine">{{ cuisine.value }}</span>
+                        <p><span class="votes"></span> vote(s)</p>
                     </li>
                 {{/each}}
             </ol>
@@ -101,6 +104,9 @@
             ORDER BY (MD5(fn:concat(?long, ?lat, '{date}')))
             LIMIT 10
         </script>
+
+
+
         <script type="application/javascript" src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0/handlebars.min.js"></script>
         <script type="application/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.js"></script>
         <script type="application/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.3.1/jquery.cookie.js"></script>
@@ -109,6 +115,32 @@
         <script type="application/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
         <script type="application/javascript" src="https://rawgithub.com/graingert/sparql.js/master/sparql.js"></script>
         <script type="application/javascript" src={% static 'core/rando-rest.js' %}></script>
+        <script>
+        var cast_vote = function(ev) {
+            ev.preventDefault();
+            var li_elem = $(this)
+            var rest = $(this).attr("data-id")
+            $.ajax({
+                type: "POST",
+                url: "/vote/",
+                data: {"restaurant": rest},
+                success: function(ret){
+                    console.log(ret)
+                    if (ret.status == "add") {
+                        li_elem.css( {"background-color":"#ccf"} )
+                        console.log("include") 
+                    } else {
+                        li_elem.css( {"background-color": "#fff"} )
+                        console.log("remove")
+                    }
+                    li_elem.find('.votes').html(ret.votes);
+                }
+            });
+        }
+
+        // add this after you have created the new elements
+        $(".container").on("click", ".votable", cast_vote)
+        </script>
     </body>
 </html>
 
