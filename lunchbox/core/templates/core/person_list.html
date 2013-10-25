@@ -86,7 +86,7 @@
                         <a href="{{ restaurant.value }}">{{ label.value }}</a>
                         <span class="cuisine">{{ cuisine.value }}</span>
                         <p><span class="votes"></span> vote(s)</p>
-                        <button class="vote btn btn-primary btn-xs">Vote!</button>
+                        <button data-url="{{ restaurant.value }}" class="vote btn btn-primary btn-xs">Vote!</button>
                     </li>
                 {{/each}}
             </ol>
@@ -94,7 +94,7 @@
         {% endverbatim %}
         <script id="rando-rest-query" type="application/sparql-query+x-handlebars-template">
             SELECT DISTINCT(?cuisine) ?restaurant ?label ?long ?lat
-            WHERE
+            WHERE 
             {
                 ?restaurant a lgdo:Restaurant ;
                     lgdo:cuisine ?cuisine ;
@@ -115,4 +115,3 @@
         <script type="application/javascript" src={% static 'core/rando-rest.js' %}></script>
     </body>
 </html>
-

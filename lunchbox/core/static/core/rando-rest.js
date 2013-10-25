@@ -36,7 +36,7 @@
 
         resturant_placeholder.on("click", "button.vote", function(event){
             var button = $(event.target),
-                restaurant = button.parent("a").attr("href");
+                restaurant = button.data("url");
             $.ajax({
                 type: "POST",
                 url: "/vote/",
