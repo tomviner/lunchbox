@@ -67,6 +67,10 @@
     </div>
 
     <div class="container">
+      <form method="post">
+        {% csrf_token %}
+        {{ form }}
+      </form>
       <!-- Example row of columns -->
       <div class="row">
         <div class="col-lg-4">
