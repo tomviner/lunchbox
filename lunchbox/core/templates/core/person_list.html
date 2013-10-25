@@ -1,4 +1,5 @@
 {% load i18n %}
+{% load static %}
 {% load crispy_forms_tags %}
 
 <!DOCTYPE html>
@@ -63,6 +64,10 @@
       </div>
     </div>
 
+    <div id="restuarants-placeholder" class="container">
+        <img src="{% static 'core/loader.gif' %}"/>
+    </div>
+
     <div class="container">
        {% crispy form %}
       <!-- Example row of columns -->
@@ -85,7 +90,35 @@
         <p>&copy; Company 2013</p>
       </footer>
     </div> <!-- /container -->
-        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.js"></script>
-        <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+        {% verbatim %}
+        <script id="restaurant-template" type="text/html+x-handlebars-template">
+            <ol>
+                {{#each restaurants}}
+                    <li>
+                        <a href="{{ restaurant.value }}">{{ label.value }}</a>
+                        <span class="cuisine">{{ cuisine.value }}</span>
+                    </li>
+                {{/each}}
+            </ol>
+        </script>
+        {% endverbatim %}
+        <script id="rando-rest-query" type="application/sparql-query+x-handlebars-template">
+            SELECT DISTINCT(?cuisine) ?restaurant ?label ?long ?lat
+            WHERE 
+            {
+                ?restaurant a lgdo:Restaurant ;
+                    lgdo:cuisine ?cuisine ;
+                    rdfs:label ?label ;
+                    geo:long ?long ;
+                    geo:lat ?lat .
+            }
+            ORDER BY (MD5(fn:concat(?long, ?lat, '{date}')))
+            LIMIT 10
+        </script>
+        <script type="application/javascript" src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0/handlebars.min.js"></script>
+        <script type="application/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.js"></script>
+        <script type="application/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+        <script type="application/javascript" src="https://rawgithub.com/graingert/sparql.js/master/sparql.js"></script>
+        <script type="application/javascript" src={% static 'core/rando-rest.js' %}></script>
     </body>
 </html>
