@@ -1,6 +1,7 @@
 from django.conf.urls import patterns, url
 
 from core.views import cast_vote, LoginView, LogoutView, test_vote, UserView
+from core.views import get_votes
 
 urlpatterns = patterns('',
                        url(r'^$', UserView.as_view(), name='home'),
@@ -10,4 +11,5 @@ urlpatterns = patterns('',
                            LogoutView.as_view(), name='logout'),
                        url(r'^testvote/$', test_vote),
                        url(r'^vote/$', cast_vote),
+                       url(r'^getvotes/$', get_votes),
                        )

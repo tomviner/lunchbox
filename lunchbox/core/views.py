@@ -82,3 +82,12 @@ def cast_vote(request):
     votes = Vote.objects.filter(restaurant=restaurant).count()
     return HttpResponse(json.dumps({"status": status, "votes": votes}), content_type="application/json")
 
+
+def get_votes(request):
+    rest_url = request.REQUEST["restaurant"]
+    restaurant, created = Restaurant.objects.get_or_create(url=rest_url)
+
+    votes = Vote.objects.filter(restaurant=restaurant).count()
+    return HttpResponse(json.dumps({"votes": votes}), content_type="application/json")
+
+
