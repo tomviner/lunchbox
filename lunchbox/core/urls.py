@@ -1,8 +1,8 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import patterns, url
 
-from core.views import ListPerson, CreatePerson
+from core.views import PersonView
 
 
 urlpatterns = patterns('',
-    url(r'^$', ListPerson.as_view(), name='home'),
+    url(r'^$', PersonView.as_view(), name='home'),
 )
