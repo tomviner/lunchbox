@@ -83,10 +83,12 @@ def cast_vote(request):
 
 
 def get_votes(request):
-    rest_url = request.REQUEST["restaurant"]
-    restaurant, created = Restaurant.objects.get_or_create(url=rest_url)
-
-    votes = Vote.objects.filter(restaurant=restaurant).count()
-    return HttpResponse(json.dumps({"votes": votes}), content_type="application/json")
+    all_votes = []
+    for restaurant in Restaurant.objects.all():
+        tmp_votes = {}
+        tmp_votes["url"] = restaurant.url
+        tmp_votes["votes"] = Vote.objects.filter(restaurant=restaurant).count()
+        all_votes.append(tmp_votes)
+    return HttpResponse(json.dumps(all_votes), content_type="application/json")
 
 
