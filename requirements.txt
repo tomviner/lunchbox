@@ -1,1 +1,2 @@
 -e git+https://github.com/django/django.git@9c982053f4d9c9696214d7c20ab32204d27e4a94#egg=Django-dev
+django-crispy-forms==1.4.0
